@@ -1,6 +1,11 @@
 package de.lmu.ifi.dbs.sysdev.jersey;
 
+import com.lmu.project.GoogleDirections;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import de.lmu.ifi.dbs.sysdev.google.GoogleNearby;
+import static de.lmu.ifi.dbs.sysdev.google.GoogleNearby.buildNearbyQueryString;
 import java.io.IOException;
 import java.net.URI;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -11,12 +16,14 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import java.util.Scanner;
+import javax.ws.rs.core.MediaType;
 
 
 public class SysDevJerseyServer {
 
     private static String BASE_URL = "http://localhost:9090/sysdev/";
 
+    
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
      *
@@ -36,28 +43,15 @@ public class SysDevJerseyServer {
         
         //Define a scanner
         Scanner scanner = new Scanner(System.in);
-
-        // Test call
-        while(true){
-            System.out.println("Enter latitude cordinate e.g., 52.533975860483864");
-            String s_lat = scanner.nextLine();
-            if (s_lat.equals("exit")){
-                break;
-            }
-            double lat = Double.parseDouble(s_lat);
-
-            System.out.println("Enter longitude cordinate e.g., 13.365554809570312");
-            String s_lon = scanner.nextLine();
-            if (s_lon.equals("exit")){
-                break;
-            }
-            double lon = Double.parseDouble(s_lon);
-
-            System.out.println("Hit enter to call Google API");
-            System.in.read();
-
-            GoogleNearby.nearbySearchJersey(lat, lon, 1, BASE_URL);
-        }
+        
+        // Test Call with google directions
+        double ori_lat= 52.533975860483864;       
+        double ori_lon = 13.365554809570312;
+        double dest_lat= 67.533975860483864;
+        double dest_lon = 22.365554809570312;
+        
+        GoogleDirections.waypoinSearchJersey(ori_lat, ori_lon, dest_lat, dest_lon);
+        
         
         //System.in.read();
         server.shutdown();
