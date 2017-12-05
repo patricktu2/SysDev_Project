@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -20,21 +23,31 @@ import java.util.logging.Logger;
 public class TestClient {
     
     public static void main (String [] args){
-        System.out.println("Test");
-        /*
-        PrintWriter out = null;
+        
+                // Test Call with google directions
+        double ori_lat= 52.533975860483864;       
+        double ori_lon = 13.163554809570312;
+        double dest_lat= 52.633975860483864;
+        double dest_lon = 24.565554809570312;
+        
+        RequestObject test = new RequestObject(ori_lat,ori_lon, dest_lat, dest_lon );
+        System.out.println(test);
+        
+        String json = "{\"s\":{\"lat\":52.43759500093112,\"lon\":13.65325927734375},\"t\":{\"lat\":52.505773395615016,\"lon\":13.36212158203125}}";
+        
+        ObjectMapper mapper = new ObjectMapper();
+        
+        
         try {
-            Socket clientSocket = new Socket("http://localhost:9090/sysdev/",4444);
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
+            RequestObject ro = mapper.readValue(json, RequestObject.class);
+            System.out.println(ro);
         } catch (IOException ex) {
             Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        out.println("Test");
-        */
         
+        
+
     }
     
 }

@@ -20,9 +20,17 @@ import javax.ws.rs.core.MediaType;
 public class MyResource {
     
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String getIt() {
-        return "Got it!";
+        double ori_lat= 52.533975860483864;       
+        double ori_lon = 13.163554809570312;
+        double dest_lat= 52.633975860483864;
+        double dest_lon = 24.565554809570312;
+        
+        String responseString = GoogleDirections.waypoinSearchJersey_uri(ori_lat, ori_lon, dest_lat, dest_lon);
+        //System.out.println(responseString)
+        
+        return responseString;
     }
     
 }
