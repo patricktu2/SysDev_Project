@@ -1,4 +1,5 @@
-package de.lmu.ifi.dbs.sysdev.google;
+//package de.lmu.ifi.dbs.sysdev.google;
+package com.lmu.project;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
