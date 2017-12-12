@@ -41,7 +41,7 @@ public class GoogleDirections {
      * Test URL: http://localhost:9090/sysdev/google_direction?originLat=52.533975860483864+&originLon=13.163554809570312+&destinationLat=52.633975860483864&destinationLon=24.565554809570312
      */
     @GET
-    @Path("URI")
+    @Path("/URI")
     @Produces(MediaType.APPLICATION_JSON)
     public static String waypoinSearchJersey_uri(
             @QueryParam("originLat") double origin_lat,
@@ -61,14 +61,15 @@ public class GoogleDirections {
         }
   
         String responseString = response.getEntity(String.class);
+        System.out.println(responseString);
         return responseString;
     }
     
 
     @POST
-    @Path("obj")
-    //@Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.TEXT_PLAIN)
+    @Path("/obj")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     //@Consumes(MediaType.TEXT_PLAIN)
 
     public static String waypoinSearchJersey_obj(String json_string) {
@@ -96,15 +97,18 @@ public class GoogleDirections {
         } catch (IOException ex) {
             Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        System.out.println(ro);
+        
         Client client = Client.create();
         WebResource webResource = client.resource(buildWaypointQueryString(origin_lat, origin_lon, dest_lat, dest_lon));
         ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         if (response.getStatus() != 200) {
             throw new RuntimeException("Failed: HTTP error code: " + response.getStatus());
         }
-        
+        // Response String seems to be null
         String responseString = response.getEntity(String.class);
+        System.out.println(responseString);
         return responseString;
     } 
     
