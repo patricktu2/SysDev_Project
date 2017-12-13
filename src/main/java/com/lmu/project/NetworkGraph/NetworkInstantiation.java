@@ -42,7 +42,7 @@ public class NetworkInstantiation {
         }
         
 
-        // ---------------- Instantiate Nodex/Vertex -------------------
+        // ---------------- Instantiate Nodex/Vertexes -------------------
         RoadNetworkGraph graph = new RoadNetworkGraph();
         
         //Get the first feature of the JSON file which are the nodes
@@ -77,7 +77,7 @@ public class NetworkInstantiation {
             
             // Assign Maximum speed and coordinates to Edge Object
             edge.setMaxspeed((int)f.getProperties().get("maxspeed"));
-            //edge.setMaxspeed(0);
+
             for (LngLatAlt c: edge_cordinates){
                 edge.coordinates.add(new Coordinate(c.getLongitude(),c.getLatitude()));
             }
