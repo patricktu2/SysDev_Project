@@ -20,14 +20,28 @@ public class Edge {
     Coordinate origin;
     Coordinate destination;
     int maxspeed;
+    private Double distance;
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
     
-    
+    /**
+     * Compute the distance of the origin and destination coordinates and assignes it to the distance attribute
+     */
+    public void assignDistance(){
+        this.distance = Coordinate.computeDistance(this.origin, this.destination);
+    }
     
     public Edge() {
     }
 
     public String toString(){
-        return "{ "+origin +";" + destination + "; Max speed="+ maxspeed + "}";
+        return "{ "+origin +";" + destination + "; Max speed="+ maxspeed + "; Distance="+ this.getDistance() +"}";
     }
     
     public Coordinate getOrigin() {

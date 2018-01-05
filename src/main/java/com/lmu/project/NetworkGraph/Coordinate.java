@@ -19,8 +19,7 @@ public class Coordinate {
         return "(" + this.getLongitude() + "," + this.getLatitude() +")";
     }
     
-    
-    
+        
     public Coordinate() {
     }
     
@@ -41,7 +40,7 @@ public class Coordinate {
         double latSin = Math.sin(Math.toRadians(lat2 - lat1) / 2);
         double lonSin = Math.sin(Math.toRadians(lon2 - lon1) / 2);
         
-        double a = latSin + lonSin + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * lonSin * lonSin;
+        double a = latSin*latSin + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * lonSin * lonSin;
         
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         
@@ -54,21 +53,33 @@ public class Coordinate {
     
     /**
      * Checks if two coordinate pairs have the same longitude and latitude values.Returns true if fulfilled
-     * @param c
+     * @param o
      * @return 
      */
-    public boolean equals (Coordinate c){
+    @Override
+    public boolean equals (Object o){
         boolean isEqual = false;
         
-        if (this.latitude == c.latitude && this.longitude==c.longitude){
-            isEqual = true;
+        if (o instanceof Coordinate){
+            Coordinate c = (Coordinate) o;
+            if (this.latitude == c.latitude && this.longitude==c.longitude){
+                isEqual = true;
+            }
         }
-        
+            
         return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.longitude) ^ (Double.doubleToLongBits(this.longitude) >>> 32));
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.latitude) ^ (Double.doubleToLongBits(this.latitude) >>> 32));
+        return hash;
     }
     
     
-    public Coordinate(double lon, double lat) {
+    public Coordinate(double lat, double lon) {
         this.longitude = lon;
         this.latitude  = lat;
     }

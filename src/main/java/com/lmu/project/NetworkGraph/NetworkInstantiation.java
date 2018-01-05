@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,7 +78,7 @@ public class NetworkInstantiation {
         for(LngLatAlt n: nodes ){
             temp_lat = n.getLatitude();
             temp_lon = n.getLongitude();
-            Vertex vertex = new Vertex(temp_lon, temp_lat);
+            Vertex vertex = new Vertex(temp_lat, temp_lon);
             //System.out.println(vertex);
             graph.vertex.add(vertex);
             
@@ -120,10 +121,11 @@ public class NetworkInstantiation {
                 
                 //Create new Edge Object
                 Edge edge = new Edge();
-                // Assign Maximum speed and coordinates to Edge Object
+                // Assign Maximum speed, distance, origin and destination to Edge Object
                 edge.setMaxspeed((int)f.getProperties().get("maxspeed"));
                 edge.setOrigin(origin);
                 edge.setDestination(destination);
+                edge.assignDistance();
                 
                 //Add Edge Object to list of the graph
                 graph.edges.add(edge);
@@ -152,7 +154,7 @@ public class NetworkInstantiation {
                 
                 //If one of the vertexes in the edges is the current vertex add this add to edge list and 
                 // add the corresponding other vertex to the neighbour list
-                if(  temp_cor.equals(temp_or) || temp_cor.equals(temp_des)){ //Note: own equals method
+                if(  temp_cor.equals(temp_or) || temp_cor.equals(temp_des)){ //Note: own equals method implemented
                     v.outgoingEdges.add(e);
                     
                     if (! temp_cor.equals(temp_or)){
@@ -171,11 +173,35 @@ public class NetworkInstantiation {
     
     public static void main (String [] args){
         RoadNetworkGraph graph = NetworkInstantiation.createGraph();
+        
         NetworkInstantiation.instantiateEdgesOfVertexes(graph);
         System.out.println(graph.getStructure());
+        /*
         System.out.println(graph.vertex.get(0).coordinate);
         System.out.println(graph.vertex.get(0).outgoingEdges);
         System.out.println(graph.vertex.get(0).neighbours);
+        */
+        
+        Vertex v = graph.vertex.get(1769);
+        Vertex z = new Vertex(new Coordinate(54.4870993,9.8603899));
+        
+        System.out.println(graph.edges);
+        
+        System.out.println("Starting vertex = " + v );
+        System.out.println("Target vertex = " + z);
+        System.out.println("Direct distance = " + Coordinate.computeDistance(v.getCoordinate(), z.getCoordinate()));
+
+        
+        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
+        
+        dijkstra.execute(v);
+        LinkedList<Vertex> path = dijkstra.getPath(z);
+        
+        System.out.println("Shortest distance by dijkstra = " + dijkstra.getShortestDistance(z));
+        
+        System.out.println(path);
+        
+        
     }
     
 }

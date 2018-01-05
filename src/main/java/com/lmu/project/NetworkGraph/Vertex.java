@@ -20,8 +20,10 @@ public class Vertex {
     // Method List<Vertex> getNeighbourNode
     // Method getDistance; if not connected set to infinity
     
-    public Vertex(double lon, double lat) {
-        this.coordinate = new Coordinate(lon,lat);
+    
+    
+    public Vertex(double lat, double lon) {
+        this.coordinate = new Coordinate(lat,lon);
     }
     
     public Vertex (Coordinate coordinate){
@@ -38,9 +40,35 @@ public class Vertex {
     }
     
     
+    /**
+     * Overwrite for the contain method to work. Equal if two vertexes have the same lat and lon coodinate values.
+     * @param o
+     * @return 
+     */
+    @Override
+    public boolean equals (Object o){
+        boolean isEqual = false;
+        
+        if (o instanceof Vertex){
+            if (this.coordinate.equals(((Vertex) o).coordinate )){
+                isEqual = true;
+            }
+        }
+        
+        return isEqual;
+        
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.coordinate);
+        return hash;
+    }
+    
     @Override
     public String toString(){
-        return "{" + "lon=" + this.coordinate.getLongitude() + ", lat=" + this.coordinate.latitude + " }" ;
+        return "( " + this.coordinate.getLatitude() + ", " + this.coordinate.longitude + " )" ;
     }
     
 }
