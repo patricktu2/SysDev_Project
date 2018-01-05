@@ -16,12 +16,25 @@ import java.util.*;
 public class RoadNetworkGraph {
     List <Vertex> vertex = new ArrayList <> ();
     List <Edge> edges = new ArrayList <>();
-
+    
+    // Method to add Intermediate Nodes/edges to the Node List (from the edges)
+    
+    //Dijkstra: distance map (recent distance from start to node i ) as hasmap; previousNode as Hashmap
+    // run: list of processed nodes, go to shortest distance node, traverse to all neighbourhood nodes
+    // Complexity is O(n^)
+    
+    /**
+     * A* algorithm
+     * Optimization function f= distance + estimation/heuristics (heuristic can be e.g., euklidian distance)
+     */
+    
     public RoadNetworkGraph() {
 
     }
     
-
+    public String getStructure (){
+        return "GRAPH STRUCTURE | Vertexes:"+this.vertex.size()  + " - Edges:" + this.edges.size();
+    }
     
     
 }

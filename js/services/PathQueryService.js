@@ -2,8 +2,9 @@
 
 sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($http, modifyMap) {
   let that = this
-  const baseUrl = 'http://localhost:9090/sysdev/services/directions'
-  const key = "AIzaSyDoj0ftlp61_llX9mR2IKuBGCubR-JjWWA";
+  // original one: const baseUrl = 'http://localhost:9090/sysdev/services/directions'
+  const baseUrl = "http://localhost:9090/sysdev/google_direction"; 
+  const key = "AIzaSyCV2YVRlc0KbMtC2QZYUSV6TG01d3k29Xg";
 
   /* mocks the requesting of algorithm data from the server and saves the response to the scope */
   this.getInitialInformation = function (model) {
@@ -34,28 +35,35 @@ sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($h
         'lat': markers[1].lat,
         'lon': markers[1].lng
       },
-      //'name': model.selected.algorithm.internal_name,
-      '@class': model.selected.algorithm.class,
+      //'name': model.selected.algorithm.internal_name, commented out for easier JSON parsing
+      //'@class': model.selected.algorithm.class,
       //'criteria': criteria_map
     }
     model['usedAlgorithm'] = model.selected.algorithm.internal_name
       switch(model['usedAlgorithm']){
         case 'Google Path (direct)':
-          url = "https://maps.googleapis.com/maps/api/directions/json?key=YOUR_API_KEY&origin="
+          
+          url = "https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyCV2YVRlc0KbMtC2QZYUSV6TG01d3k29Xg&origin="
                     +markers[0].lat+","+markers[0].lng+"&destination="+markers[1].lat+","+markers[1].lng;
+            //window.alert("URL:"+url);
+            console.log(url)
           $http.get(url).success(function(response) {
             geojson = that.extractGeoJson(response);
             that.routeResponse(model, geojson);
           });
           break;
         case 'Google Path (via Server [URI])':
-          url = baseUrl+"/uri?"+"originLat="+markers[0].lat+"&originLon="+markers[0].lng+"&destinationLat="+markers[1].lat+"&destinationLon="+markers[1].lng;
+          //url = baseUrl+"/uri?"+"originLat="+markers[0].lat+"&originLon="+markers[0].lng+"&destinationLat="+markers[1].lat+"&destinationLon="+markers[1].lng;
+          url = baseUrl+"/URI?"+"originLat="+markers[0].lat+"&originLon="+markers[0].lng+"&destinationLat="+markers[1].lat+"&destinationLon="+markers[1].lng;
           $http.get(url).success(function(response) {
             geojson = that.extractGeoJson(response);
             that.routeResponse(model, geojson);
           });
           break;
         case 'Google Path (via Server [OBJ])':
+          
+          //let requObj = JSON.stringify(requestObject) 
+          //$http.post(baseUrl+"/obj/", "Hallo")
           $http.post(baseUrl+"/obj/", requestObject)
           .then(response => {
                 geojson = that.extractGeoJson(response.data);

@@ -52,6 +52,22 @@ public class Coordinate {
         
     }
     
+    /**
+     * Checks if two coordinate pairs have the same longitude and latitude values.Returns true if fulfilled
+     * @param c
+     * @return 
+     */
+    public boolean equals (Coordinate c){
+        boolean isEqual = false;
+        
+        if (this.latitude == c.latitude && this.longitude==c.longitude){
+            isEqual = true;
+        }
+        
+        return isEqual;
+    }
+    
+    
     public Coordinate(double lon, double lat) {
         this.longitude = lon;
         this.latitude  = lat;

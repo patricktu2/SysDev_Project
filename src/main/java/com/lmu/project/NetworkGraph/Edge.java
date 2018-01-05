@@ -11,28 +11,25 @@ import java.util.List;
 /**
  *
  * @author Patrick
+ * 
+ * Represents an undirected edge that connects two nodes/vertexes
+ * and has a maximum speed limit
  */
 public class Edge {
-    List <Coordinate> coordinates = new ArrayList <> ();
+
     Coordinate origin;
     Coordinate destination;
     int maxspeed;
-
+    
+    
+    
     public Edge() {
     }
 
     public String toString(){
-        return coordinates + "; Max speed="+ maxspeed;
+        return "{ "+origin +";" + destination + "; Max speed="+ maxspeed + "}";
     }
     
-    public List<Coordinate> getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(List<Coordinate> coordinates) {
-        this.coordinates = coordinates;
-    }
-
     public Coordinate getOrigin() {
         return origin;
     }
