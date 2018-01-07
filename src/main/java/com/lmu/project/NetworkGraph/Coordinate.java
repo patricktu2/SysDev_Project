@@ -16,7 +16,7 @@ public class Coordinate {
     public static final int EARTH_RADIUS = 6378137;
     
     public String toString(){
-        return "(" + this.getLongitude() + "," + this.getLatitude() +")";
+        return "["+ this.getLatitude()+ ","+ this.getLongitude() + "]";
     }
     
         

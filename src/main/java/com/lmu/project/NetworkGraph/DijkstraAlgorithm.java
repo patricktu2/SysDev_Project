@@ -5,6 +5,7 @@
  */
 package com.lmu.project.NetworkGraph;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -49,8 +50,16 @@ public class DijkstraAlgorithm {
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
         HashMap <String, Object > returnObject = dijkstra.execute(origin,destination);
         
-        System.out.println("Distance="+returnObject.get("distance"));
-        System.out.println("Path: " + returnObject.get("path"));
+        
+        DecimalFormat df_distance = new DecimalFormat("#.###"); 
+        String distance = df_distance.format(returnObject.get("distance"));
+        DecimalFormat df_time = new DecimalFormat("#.##");
+        String time = df_time.format(returnObject.get("time"));
+        
+        
+        System.out.println("Distance in KM ="+ distance);
+        System.out.println("Path=" + returnObject.get("path"));
+        System.out.println("Travel Time in Minutes =" + time);
         
         // Construct JSON response in the needed form
         String json_part1 = "{\n" +
@@ -62,8 +71,7 @@ public class DijkstraAlgorithm {
         String path = returnObject.get("path").toString();
         String json_part2 = "},\n" +
                             "           \"properties\":{\"costs\":{\"Distance\":";
-        String distance = returnObject.get("distance").toString();
-        String json_part3 = ",\"Travel_Time\": \"???\"},\n" +
+        String json_part3 = ",\"Travel_Time\": \" "+ time + "\"},\n" +
                             "		\"instructions\":[]}\n" +
                             "		}]\n" +
                             "	}";
@@ -243,7 +251,42 @@ public class DijkstraAlgorithm {
         return path;
     }    
     
-    
+    /**
+     * Returns the travel time in Minutes based on the length if the edges in the list of paths
+     * and the maximum speed limit 
+     * @param path
+     * @return 
+     */
+    private double computeTravelTime (List <Vertex> path){
+        Iterator <Vertex> iterator = path.iterator();
+        double travelTime=0.0;
+        Vertex temp_or = iterator.next();//First Element / Vertex of Path
+        Vertex temp_des = iterator.next();
+        Edge currentEdge = null;
+           
+       // Check if edges contain the vertexes of optimal path and compute their time based on langth and speed limit
+        while (iterator.hasNext()){
+            //System.out.println("compute time- current vertex:" + temp_or );
+            for (Edge e: this.edges){
+                if (e.destination.equals(temp_or.coordinate) && e.origin.equals(temp_des.coordinate)){
+                    // time[s] = length[m] / maxSpeed[m/s]
+                    //System.out.println("1:"+e);
+                    travelTime += e.getDistance() / (e.getMaxspeed()*1000/3600);
+                }
+                else if (e.destination.equals(temp_des.coordinate) && e.origin.equals(temp_or.coordinate)){
+                    //System.out.println("2" + e);
+                    // time[s] = length[m] / maxSpeed[m/s]
+                    travelTime += e.getDistance() / (e.getMaxspeed()*1000/3600);
+                }
+            }
+            // Update rule
+            temp_or = temp_des;
+            temp_des = iterator.next();
+        }
+         
+        return (travelTime/60); // convert to minutes
+    } 
+        
     /**
      * Returns at the moment a hashmap with the keys "distance" for the minimal distance to the target node 
      * and the key "path" with the shortest path from source vertex to target vertex
@@ -251,7 +294,7 @@ public class DijkstraAlgorithm {
      * @param target
      * @return 
      */
-    public HashMap <String, Object > execute(Vertex source, Vertex target) {
+    public HashMap <String, Object> execute(Vertex source, Vertex target){
         
         System.out.println("--- DIJKSTRA ALGORITHM start ----");
         settledNodes = new HashSet<Vertex>(); // List / Marker that keeps track if a vertex has been visited
@@ -275,11 +318,18 @@ public class DijkstraAlgorithm {
         }
         System.out.println("---Dijkstra Algorithm terminated with "+ counter + " iterations---");
         
+        
+        List <Vertex> path = getPath(target);
+        double distanceToSource = distance.get(target)/1000; // convert into kilometer
+        double travelTime = computeTravelTime(path); // In minutes
+        
         //System.out.println(predecessors.get(target));
         HashMap <String, Object >returnObject = new HashMap();
-        returnObject.put("distance", distance.get(target));
-        returnObject.put("path", getPath(target));
+        returnObject.put("distance", distanceToSource);
+        returnObject.put("time", travelTime);
+        returnObject.put("path", path);
         returnObject.put("target", target);
+        
         return returnObject;
         
     } 

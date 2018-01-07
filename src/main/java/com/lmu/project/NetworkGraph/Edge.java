@@ -39,7 +39,12 @@ public class Edge {
     
     public Edge() {
     }
-
+    
+    public Edge (Coordinate origin, Coordinate destination){
+        origin = origin;
+        destination = destination;
+    }
+    
     public String toString(){
         return "{ "+origin +";" + destination + "; Max speed="+ maxspeed + "; Distance="+ this.getDistance() +"}";
     }
