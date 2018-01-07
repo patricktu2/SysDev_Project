@@ -68,7 +68,7 @@ public class Vertex {
     
     @Override
     public String toString(){
-        return "( " + this.coordinate.getLatitude() + ", " + this.coordinate.longitude + " )" ;
+        return "[" + this.coordinate.getLatitude() + "," + this.coordinate.longitude + "]" ;
     }
     
 }

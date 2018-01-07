@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,7 +81,7 @@ public class NetworkInstantiation {
         for(LngLatAlt n: nodes ){
             temp_lat = n.getLatitude();
             temp_lon = n.getLongitude();
-            Vertex vertex = new Vertex(temp_lat, temp_lon);
+            Vertex vertex = new Vertex(temp_lon, temp_lat);
             //System.out.println(vertex);
             graph.vertex.add(vertex);
             
@@ -168,24 +171,19 @@ public class NetworkInstantiation {
             
         }
     }
-    
-    
+     
     
     public static void main (String [] args){
         RoadNetworkGraph graph = NetworkInstantiation.createGraph();
         
         NetworkInstantiation.instantiateEdgesOfVertexes(graph);
         System.out.println(graph.getStructure());
-        /*
-        System.out.println(graph.vertex.get(0).coordinate);
-        System.out.println(graph.vertex.get(0).outgoingEdges);
-        System.out.println(graph.vertex.get(0).neighbours);
-        */
+
         
-        Vertex v = graph.vertex.get(1769);
-        Vertex z = new Vertex(new Coordinate(54.4870993,9.8603899));
+        Vertex v = graph.vertex.get(0);
+        Vertex z = graph.vertex.get(1209);
+        Vertex x = graph.vertex.get(120);
         
-        System.out.println(graph.edges);
         
         System.out.println("Starting vertex = " + v );
         System.out.println("Target vertex = " + z);
@@ -194,13 +192,12 @@ public class NetworkInstantiation {
         
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
         
-        dijkstra.execute(v);
-        LinkedList<Vertex> path = dijkstra.getPath(z);
+        HashMap <String, Object > returnObject = dijkstra.execute(v,z);
         
-        System.out.println("Shortest distance by dijkstra = " + dijkstra.getShortestDistance(z));
+        System.out.println("Distance="+returnObject.get("distance"));
+        System.out.println("Path: " + returnObject.get("path"));
         
-        System.out.println(path);
-        
+
         
     }
     

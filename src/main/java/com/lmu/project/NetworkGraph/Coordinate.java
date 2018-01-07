@@ -80,8 +80,9 @@ public class Coordinate {
     
     
     public Coordinate(double lat, double lon) {
-        this.longitude = lon;
         this.latitude  = lat;
+        this.longitude = lon;
+        
     }
     
     
