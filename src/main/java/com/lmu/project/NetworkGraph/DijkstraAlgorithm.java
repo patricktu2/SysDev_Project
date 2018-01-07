@@ -32,17 +32,18 @@ public class DijkstraAlgorithm {
     public static String performShortestPathSearch(double origin_lat,double origin_lon, double dest_lat, double dest_lon){
         //Fetch parameters and create vertex object
         Vertex origin = new Vertex(origin_lon,origin_lat);
-        Vertex destination = new Vertex (dest_lon, dest_lat);
-        
-        System.out.println("Origin=" +origin + " Destination="+ destination);
+        Vertex destination = new Vertex (dest_lon, dest_lat);            
+        System.out.println("Parameters taken by markers on the map: Origin=" +origin + " Destination="+ destination);
         
         //Create and instantiate Network Graph
         RoadNetworkGraph graph = NetworkInstantiation.createGraph();
         NetworkInstantiation.instantiateEdgesOfVertexes(graph);
         
-        //Vertex test = graph.vertex.get(356);
-        //System.out.println("Param Vertex="+origin + " Graph Vertex="+test);
-        //System.out.println(origin.equals(test));
+        //If the coordinate cannot be found within the graph get the closest vertex as an approximate
+        origin = findClosestVertex(origin,graph);
+        destination = findClosestVertex(destination,graph);
+        
+        System.out.println("Approximating a node within the graph: Origin=" +origin + " Destination="+ destination);
         
         //Perform Dijkstra Algorithm; Return Object with attribute "Distance" and "Path"
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
@@ -69,11 +70,39 @@ public class DijkstraAlgorithm {
         
         String json_string = json_part1 + path + json_part2 + distance + json_part3;
         
-        System.out.println(json_string);
+        //System.out.println(json_string);
         
         return json_string;
         
     }
+    
+    /**
+     * Given a Vertex and a Graph this method returns the Vertex in the Graph which has the
+     * least great circle distance from the original vertex
+     * @param node
+     * @param graph
+     * @return 
+     */
+    public static Vertex findClosestVertex (Vertex node, RoadNetworkGraph graph){
+        List <Vertex> vertexes = graph.vertex;
+        
+        Vertex approximate_node = null;
+        
+        double min_distance = Double.MAX_VALUE;
+        double temp_distance;
+        
+        for(Vertex v: vertexes){
+            temp_distance = Coordinate.computeDistance(node.coordinate, v.coordinate);
+            if (temp_distance < min_distance){
+                min_distance = temp_distance;
+                approximate_node = v; 
+            }
+        }
+        
+        Vertex closestVertex = new Vertex(approximate_node.coordinate);
+        return closestVertex;
+    }
+    
     
     /**
      * traverses all vertexes of the given vertex set (e.g., unvisited vertexes) and 
@@ -199,7 +228,7 @@ public class DijkstraAlgorithm {
         Vertex step = target;
         
         // WTF WHY IS THIS ALWAYS NULL IN A CALL WITHIN THE CLASS AFTER EXCECUTION?
-        System.out.println(predecessors.get(step)); 
+        //System.out.println(predecessors.get(step)); 
         // check if a path exists
         if (predecessors.get(step) == null) {
             return null;

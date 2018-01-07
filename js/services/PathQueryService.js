@@ -57,7 +57,7 @@ sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($h
           url = baseUrl+"/URI?"+"originLat="+markers[0].lat+"&originLon="+markers[0].lng+"&destinationLat="+markers[1].lat+"&destinationLon="+markers[1].lng;
           $http.get(url).success(function(response) {
             geojson = that.extractGeoJson(response);
-            console.log(JSON.stringify(geojson));
+            //console.log(JSON.stringify(geojson));
             that.routeResponse(model, geojson);
           });
           break;
@@ -68,7 +68,7 @@ sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($h
           $http.post(baseUrl+"/obj/", requestObject)
           .then(response => {
                 geojson = that.extractGeoJson(response.data);
-                console.log(JSON.stringify(geojson));
+                //console.log(JSON.stringify(geojson));
                 that.routeResponse(model, geojson);
               })
           break;
@@ -76,7 +76,7 @@ sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($h
           //alert("Feauture not implemented yet.")
           $http.post(baseUrl+"/dijkstra/", requestObject)
              .then(response => {
-                 console.log(JSON.stringify(response));
+                 //console.log(JSON.stringify(response));
                  that.routeResponse(model, response)
                })
               break;

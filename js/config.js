@@ -61,9 +61,9 @@ sysdevinterface.factory('config', function () {
     model: {
       map: {
         center: {
-          lat: 52.512,
-          lng: 13.401,
-          zoom: 12
+          lat: 54.469056,
+          lng: 9.835407,
+          zoom: 13
         },
         defaults: {
           maxZoom: 18,

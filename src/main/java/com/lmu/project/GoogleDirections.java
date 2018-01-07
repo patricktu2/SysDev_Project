@@ -166,9 +166,9 @@ public class GoogleDirections {
         Double dest_lon_rounded = Double.parseDouble(df.format(dest_lon) );
                      
         //Call Dijkstra Algorithm and pass coordinates
-        //DijkstraAlgorithm.performShortestPathSearch(origin_lat_rounded, origin_lon_rounded, dest_lat_rounded, dest_lon_rounded);
+        String return_geo_json = DijkstraAlgorithm.performShortestPathSearch(origin_lat_rounded, origin_lon_rounded, dest_lat_rounded, dest_lon_rounded);
                
-        String return_geo_json = DijkstraAlgorithm.performShortestPathSearch(54.4606423, 9.827986, 54.4608511, 9.8290738);
+        // TEST CALL String return_geo_json = DijkstraAlgorithm.performShortestPathSearch(54.4606423, 9.827986, 54.4608511, 9.8290738);
         
         return return_geo_json;
     }
