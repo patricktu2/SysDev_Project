@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class DijkstraAlgorithm {
    
+    static RoadNetworkGraph graph_global = NetworkInstantiation.createGraph();
     
     private final List<Vertex> nodes;
     private final List<Edge> edges;
@@ -36,20 +37,22 @@ public class DijkstraAlgorithm {
         Vertex destination = new Vertex (dest_lon, dest_lat);            
         System.out.println("Parameters taken by markers on the map: Origin=" +origin + " Destination="+ destination);
         
-        //Create and instantiate Network Graph
-        RoadNetworkGraph graph = NetworkInstantiation.createGraph();
-        NetworkInstantiation.instantiateEdgesOfVertexes(graph);
+        //Graph as global variable so that it needs to be instantiated just once
+        RoadNetworkGraph graph = graph_global;
         
         //If the coordinate cannot be found within the graph get the closest vertex as an approximate
         origin = findClosestVertex(origin,graph);
         destination = findClosestVertex(destination,graph);
-        
         System.out.println("Approximating a node within the graph: Origin=" +origin + " Destination="+ destination);
         
         //Perform Dijkstra Algorithm; Return Object with attribute "Distance" and "Path"
+
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
+
+        double startTime = System.currentTimeMillis();
         HashMap <String, Object > returnObject = dijkstra.execute(origin,destination);
-        
+        double stopTime = System.currentTimeMillis();
+        System.out.println("(Dijkstra Excecution time:"+(stopTime-startTime)+")");
         
         DecimalFormat df_distance = new DecimalFormat("#.###"); 
         String distance = df_distance.format(returnObject.get("distance"));
@@ -57,9 +60,9 @@ public class DijkstraAlgorithm {
         String time = df_time.format(returnObject.get("time"));
         
         
-        System.out.println("Distance in KM ="+ distance);
-        System.out.println("Path=" + returnObject.get("path"));
-        System.out.println("Travel Time in Minutes =" + time);
+        //System.out.println("Distance in KM ="+ distance);
+        //System.out.println("Path=" + returnObject.get("path"));
+        //System.out.println("Travel Time in Minutes =" + time);
         
         // Construct JSON response in the needed form
         String json_part1 = "{\n" +
@@ -112,19 +115,24 @@ public class DijkstraAlgorithm {
     }
     
     
+ 
+    
+    
     /**
      * traverses all vertexes of the given vertex set (e.g., unvisited vertexes) and 
-     * returns the one with the minimum distance
+     * returns the one with the minimum total distance=shortest distance to node + approx distance from node to target
      * @param vertexes
      * @return 
      */
-    private Vertex getMinimum(Set<Vertex> vertexes) {
+    private Vertex getMinimum(Set<Vertex> vertexes, Vertex target) {
         Vertex minimum = null;
         for (Vertex vertex : vertexes) {
             if (minimum == null) {
                 minimum = vertex;
             } else {
-                if (getShortestDistance(vertex) < getShortestDistance(minimum)) {
+                // Extension Dijkstra to A star by adding heuristic 
+                if (getShortestDistance(vertex)+Coordinate.computeDistance(vertex.coordinate, target.coordinate)
+                        < getShortestDistance(minimum)+Coordinate.computeDistance(minimum.coordinate, target.coordinate)) {
                     minimum = vertex;
                 }
             }
@@ -297,8 +305,8 @@ public class DijkstraAlgorithm {
     public HashMap <String, Object> execute(Vertex source, Vertex target){
         
         System.out.println("--- DIJKSTRA ALGORITHM start ----");
-        settledNodes = new HashSet<Vertex>(); // List / Marker that keeps track if a vertex has been visited
-        unSettledNodes = new HashSet<Vertex>(); //List / Marker that keeps track of unvisited vertexes
+        settledNodes = new HashSet<Vertex>(); // List  that keeps track if a vertexes where shortest path from source has been found
+        unSettledNodes = new HashSet<Vertex>(); //List  that keeps track of vertexes to be evaluated
         distance = new Hashtable<Vertex, Double>(); // Distance from the source vertex to a particualar vertex
         predecessors = new Hashtable<Vertex, Vertex>(); // Previous nodes in optimal path
         
@@ -306,8 +314,9 @@ public class DijkstraAlgorithm {
         unSettledNodes.add(source); // mark as visited
        
         int counter = 1;
-        while (unSettledNodes.size() > 0) {
-            Vertex node = getMinimum(unSettledNodes); // Priority Queuy according to greedy principle - which one to visit next?
+        while (unSettledNodes.size() > 0 && !unSettledNodes.contains(target)) {
+            //System.out.println("Unsettled Nodes:"+unSettledNodes);
+            Vertex node = getMinimum(unSettledNodes, target); // Priority Queuy according to greedy principle - which one to visit next?
             //System.out.println(counter + ". Iteration - Current node: " + node);
             
             settledNodes.add(node); // Mark the vertex to be visited 

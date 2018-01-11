@@ -2,6 +2,8 @@
 package com.lmu.project;
 
 import com.lmu.project.GoogleDirections;
+import com.lmu.project.NetworkGraph.NetworkInstantiation;
+import com.lmu.project.NetworkGraph.RoadNetworkGraph;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -24,10 +26,10 @@ import javax.ws.rs.core.MediaType;
 
 
 public class SysDevJerseyServer {
-
+    
     private static String BASE_URL = "http://localhost:9090/sysdev/";
 
-    
+
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
      *
@@ -42,7 +44,7 @@ public class SysDevJerseyServer {
 
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer(BASE_URL);
-
+     
         System.out.println(String.format("--------SysDev Jersey Server started with WADL available at %sapplication.wadl --------", BASE_URL));
         
         // Establish Client connection and open stream connection for communication

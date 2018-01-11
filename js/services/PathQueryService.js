@@ -4,7 +4,7 @@ sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($h
   let that = this
   // original one: const baseUrl = 'http://localhost:9090/sysdev/services/directions'
   const baseUrl = "http://localhost:9090/sysdev/google_direction"; 
-  const key = "AIzaSyCV2YVRlc0KbMtC2QZYUSV6TG01d3k29Xg";
+  const key = "AIzaSyDoj0ftlp61_llX9mR2IKuBGCubR-JjWWA";
 
   /* mocks the requesting of algorithm data from the server and saves the response to the scope */
   this.getInitialInformation = function (model) {
@@ -43,7 +43,7 @@ sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($h
       switch(model['usedAlgorithm']){
         case 'Google Path (direct)':
           
-          url = "https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyCV2YVRlc0KbMtC2QZYUSV6TG01d3k29Xg&origin="
+          url = "https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyDoj0ftlp61_llX9mR2IKuBGCubR-JjWWA&origin="
                     +markers[0].lat+","+markers[0].lng+"&destination="+markers[1].lat+","+markers[1].lng;
             //window.alert("URL:"+url);
             console.log(url)

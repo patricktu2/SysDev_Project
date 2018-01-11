@@ -176,7 +176,7 @@ public class NetworkInstantiation {
     public static void main (String [] args){
         RoadNetworkGraph graph = NetworkInstantiation.createGraph();
         
-        NetworkInstantiation.instantiateEdgesOfVertexes(graph);
+        //NetworkInstantiation.instantiateEdgesOfVertexes(graph);
         System.out.println(graph.getStructure());
 
         
