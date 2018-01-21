@@ -112,7 +112,7 @@ public class GoogleDirections {
             dest_lon = ro.getT().getLon();
             
         } catch (IOException ex) {
-            Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         System.out.println("[Google Direction] Converted JSON to request object and pass to Google API. Request object=" + ro);
@@ -162,7 +162,7 @@ public class GoogleDirections {
             dest_lon = ro.getT().getLon();
             
         } catch (IOException ex) {
-            Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Rounding precision to 6 decimal digits as this is the precision in the JSON File

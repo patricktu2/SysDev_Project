@@ -7,7 +7,6 @@ package com.lmu.project.TCPServer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lmu.project.JerseyServer.RequestObject;
-import com.lmu.project.JerseyServer.TestClient;
 import com.lmu.project.NetworkGraph.DijkstraAlgorithm;
 import static com.lmu.project.NetworkGraph.DijkstraAlgorithm.findClosestVertex;
 import com.lmu.project.NetworkGraph.RoadNetworkGraph;
@@ -56,7 +55,7 @@ public class DijkstraHandler {
             dest_lon = ro.getT().getLon();
             
         } catch (IOException ex) {
-            Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger();
         }
 
         // Rounding precision to 6 decimal digits as this is the precision in the JSON File
