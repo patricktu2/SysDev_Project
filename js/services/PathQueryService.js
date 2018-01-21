@@ -74,7 +74,7 @@ sysdevinterface.service('pathQueryService', [ '$http', 'modifyMap', function ($h
           break;
         case 'Dijkstra Shortest Path':
           //alert("Feauture not implemented yet.")
-          $http.post(baseUrl+"/dijkstra/", requestObject)
+          $http.post(baseUrl+"/dijkstra_tcp/", requestObject)
              .then(response => {
                  //console.log(JSON.stringify(response));
                  that.routeResponse(model, response)

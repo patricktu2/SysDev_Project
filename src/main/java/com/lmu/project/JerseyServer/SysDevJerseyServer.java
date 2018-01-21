@@ -1,7 +1,6 @@
 //package de.lmu.ifi.dbs.sysdev.jersey;
-package com.lmu.project;
+package com.lmu.project.JerseyServer;
 
-import com.lmu.project.GoogleDirections;
 import com.lmu.project.NetworkGraph.NetworkInstantiation;
 import com.lmu.project.NetworkGraph.RoadNetworkGraph;
 import com.sun.jersey.api.client.Client;
@@ -45,42 +44,13 @@ public class SysDevJerseyServer {
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer(BASE_URL);
      
-        System.out.println(String.format("--------SysDev Jersey Server started with WADL available at %sapplication.wadl --------", BASE_URL));
+        System.out.println(String.format("[SysDevJerseyServer] Server started with WADL available at %sapplication.wadl --------", BASE_URL));
         
-        // Establish Client connection and open stream connection for communication
-        /*
-        try{
-            int portNumber = 4444;
-            ServerSocket serverSocket = new ServerSocket(portNumber);
-            Socket clientSocket = serverSocket.accept();
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
-        }
-        catch(IOException e){
-            System.err.println("Couldn't get I/O for connection to: tornado");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        */
-        /*
-        //Define a scanner
-        Scanner scanner = new Scanner(System.in);
-        
-        // Test Call with google directions
-        double ori_lat= 52.533975860483864;       
-        double ori_lon = 13.365554809570312;
-        double dest_lat= 67.533975860483864;
-        double dest_lon = 22.365554809570312;
-        
-        GoogleDirections.waypoinSearchJersey(ori_lat, ori_lon, dest_lat, dest_lon);
-        */
-        
-        //Close
 
-        System.out.println("Press any key to stop the server...");
+        System.out.println("[SysDevJerseyServer] Press any key to stop the server...");
         System.in.read();
         server.shutdown();
-        System.out.println("Server shut down");
+        System.out.println("[SysDevJerseyServer] Server shut down");
     }
 
     @Provider

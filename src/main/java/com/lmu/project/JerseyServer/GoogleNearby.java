@@ -1,5 +1,5 @@
 //package de.lmu.ifi.dbs.sysdev.google;
-package com.lmu.project;
+package com.lmu.project.JerseyServer;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;

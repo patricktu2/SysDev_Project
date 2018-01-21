@@ -3,16 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lmu.project;
+package com.lmu.project.JerseyServer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lmu.project.NetworkGraph.DijkstraAlgorithm;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.RoundingMode;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,11 +61,14 @@ public class GoogleDirections {
             @QueryParam("destinationLon") double dest_lon) {
         //Sent information to google and wait
 
-        System.out.println("Call 'Google Path (via Server [URI])' via http://localhost:9090/sysdev/google_direction/uri");
-        System.out.println("PARAMETERS: OriginLat="+origin_lat+" OriginLon="+origin_lon + " DestLat="+dest_lat + " DestLon="+ dest_lon);
+        System.out.println("[Google Direction] Call 'Google Path (via Server [URI])' via http://localhost:9090/sysdev/google_direction/uri");
+        //System.out.println("PARAMETERS: OriginLat="+origin_lat+" OriginLon="+origin_lon + " DestLat="+dest_lat + " DestLon="+ dest_lon);
         
         Client client = Client.create();
+        
         WebResource webResource = client.resource(buildWaypointQueryString(origin_lat, origin_lon, dest_lat, dest_lon));
+        System.out.println("[Google Direction] Extract paramters from URI and call Google API");
+
         ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         if (response.getStatus() != 200) {
             throw new RuntimeException("Failed: HTTP error code: " + response.getStatus());
@@ -85,8 +92,8 @@ public class GoogleDirections {
     public static String waypoinSearchJersey_obj(String json_string) {
         //Sent information to google and wait
 
-        System.out.println("Call 'Google Path (via Server [OBJ])' via http://localhost:9090/sysdev/google_direction/obj");
-        System.out.println("Received via HTTP POST:\n"+json_string);
+        System.out.println("[Google Direction] Call 'Google Path (via Server [OBJ])' via http://localhost:9090/sysdev/google_direction/obj");
+        //System.out.println("Received via HTTP POST:\n"+json_string);
         
         // Create new Object Mapper for JSON parsing
         ObjectMapper mapper = new ObjectMapper();
@@ -108,7 +115,7 @@ public class GoogleDirections {
             Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println(ro);
+        System.out.println("[Google Direction] Converted JSON to request object and pass to Google API. Request object=" + ro);
         
         Client client = Client.create();
         WebResource webResource = client.resource(buildWaypointQueryString(origin_lat, origin_lon, dest_lat, dest_lon));
@@ -133,8 +140,10 @@ public class GoogleDirections {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public static String dijkstraSearch (String json_string){
-        System.out.println("Call Dijkastra Routing Algorithm via http://localhost:9090/sysdev/google_direction/dijkstra");
+        System.out.println("[Google Direction] Call Dijkastra Routing Algorithm via http://localhost:9090/sysdev/google_direction/dijkstra");
         //System.out.println("Received via HTTP POST:\n"+json_string);
+        
+        //System.out.println("Input:"+ json_string);
         
         // Create new Object Mapper for JSON parsing
         ObjectMapper mapper = new ObjectMapper();
@@ -172,6 +181,60 @@ public class GoogleDirections {
         
         return return_geo_json;
     }
+    
+    /**
+     * Connects to TCP Server via a Server Socket which performs the dijsktra shortest path
+     * search 
+     * @param json_string
+     * @return 
+     */
+    @POST
+    @Path("/dijkstra_tcp")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public static String dijkstraSearch_TCP (String json_string){
+        System.out.println("[Google Direction] Call Dijkastra TCP via http://localhost:9090/sysdev/google_direction/dijkstra_tcp");
+        
+        String response="";
+        
+        Socket socket =null; 
+        try {
+            System.out.println("[Google Direction] TCP Socket created at Port 9595");
+            socket = new Socket("localhost", 9595);
+           
+        DataOutputStream  oos = new DataOutputStream(socket.getOutputStream());
+        
+        oos.writeUTF(json_string);
+        oos.flush();
+        DataInputStream ois = new DataInputStream(socket.getInputStream());
+        response = (String) ois.readUTF();
+        
+        //System.err.println(response);
+        
+
+        } catch (UnknownHostException e) {
+            System.out.println("[Google Direction] Unknown Host...");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("[Google Direction] IOProbleme...");
+            e.printStackTrace();
+        } finally {
+            if (socket != null)
+                try {
+                    socket.close();
+                    System.out.println("[Google Direction] Socket closed");
+                } catch (IOException e) {
+                    System.out.println("[Google Direction] Socket nicht zu schliessen...");
+                    e.printStackTrace();
+                }
+            
+            return response;
+        } 
+        
+        
+        
+    }
+    
     
     /**
      * Builds a query string with given latitude and longitude coordinates as attributes in 

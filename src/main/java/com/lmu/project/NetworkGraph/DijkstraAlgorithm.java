@@ -35,7 +35,7 @@ public class DijkstraAlgorithm {
         //Fetch parameters and create vertex object
         Vertex origin = new Vertex(origin_lon,origin_lat);
         Vertex destination = new Vertex (dest_lon, dest_lat);            
-        System.out.println("Parameters taken by markers on the map: Origin=" +origin + " Destination="+ destination);
+        //System.out.println("Parameters taken by markers on the map: Origin=" +origin + " Destination="+ destination);
         
         //Graph as global variable so that it needs to be instantiated just once
         RoadNetworkGraph graph = graph_global;
@@ -43,7 +43,7 @@ public class DijkstraAlgorithm {
         //If the coordinate cannot be found within the graph get the closest vertex as an approximate
         origin = findClosestVertex(origin,graph);
         destination = findClosestVertex(destination,graph);
-        System.out.println("Approximating a node within the graph: Origin=" +origin + " Destination="+ destination);
+        //System.out.println("Approximating a node within the graph: Origin=" +origin + " Destination="+ destination);
         
         //Perform Dijkstra Algorithm; Return Object with attribute "Distance" and "Path"
 
@@ -52,7 +52,7 @@ public class DijkstraAlgorithm {
         double startTime = System.currentTimeMillis();
         HashMap <String, Object > returnObject = dijkstra.execute(origin,destination);
         double stopTime = System.currentTimeMillis();
-        System.out.println("(Dijkstra Excecution time:"+(stopTime-startTime)+")");
+        //System.out.println("(Dijkstra Excecution time:"+(stopTime-startTime)+")");
         
         DecimalFormat df_distance = new DecimalFormat("#.###"); 
         String distance = df_distance.format(returnObject.get("distance"));
@@ -304,7 +304,7 @@ public class DijkstraAlgorithm {
      */
     public HashMap <String, Object> execute(Vertex source, Vertex target){
         
-        System.out.println("--- DIJKSTRA ALGORITHM start ----");
+        //System.out.println("--- DIJKSTRA ALGORITHM start ----");
         settledNodes = new HashSet<Vertex>(); // List  that keeps track if a vertexes where shortest path from source has been found
         unSettledNodes = new HashSet<Vertex>(); //List  that keeps track of vertexes to be evaluated
         distance = new Hashtable<Vertex, Double>(); // Distance from the source vertex to a particualar vertex
@@ -325,7 +325,7 @@ public class DijkstraAlgorithm {
             //System.out.println(getPath(node));
             counter++;
         }
-        System.out.println("---Dijkstra Algorithm terminated with "+ counter + " iterations---");
+        System.out.println("[DijkstraAlgorithm] Search algorithm terminated with "+ counter + " iterations---");
         
         
         List <Vertex> path = getPath(target);

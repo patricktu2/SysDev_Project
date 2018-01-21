@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lmu.project;
+package com.lmu.project.JerseyServer;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -74,8 +74,8 @@ public class RequestObject {
 
     
     public String toString (){
-        return "Start:"+ "Lat="+this.getS().getLat()+" lon=" + this.getS().getLon() 
-                + "\n Dest:"+  "Lat="+this.getT().getLat()+" lon=" + this.getT().getLon();
+        return "{Start:"+ "{Lat="+this.getS().getLat()+",lon=" + this.getS().getLon() 
+                + "}, Dest={"+  "Lat="+this.getT().getLat()+",lon=" + this.getT().getLon()+"}}";
     }
     
     

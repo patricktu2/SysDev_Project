@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lmu.project;
+package com.lmu.project.JerseyServer;
 
+import com.lmu.project.JerseyServer.GoogleDirections;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
