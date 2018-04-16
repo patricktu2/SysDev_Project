@@ -197,18 +197,22 @@ public class GoogleDirections {
         
         String response="";
         
+        // Establish TCP Server Connection via a Socket
         Socket socket =null; 
         try {
             System.out.println("[Google Direction] TCP Socket created at Port 9595");
             socket = new Socket("localhost", 9595);
-           
-        DataOutputStream  oos = new DataOutputStream(socket.getOutputStream());
         
-        oos.writeUTF(json_string);
-        oos.flush();
-        DataInputStream ois = new DataInputStream(socket.getInputStream());
-        response = (String) ois.readUTF();
-        
+            DataOutputStream  oos = new DataOutputStream(socket.getOutputStream());
+
+            // Transmit JSON file to TCP Server
+            oos.writeUTF(json_string);
+            oos.flush();
+            
+            // Receive response from TCP Server and store as String
+            DataInputStream ois = new DataInputStream(socket.getInputStream());
+            response = (String) ois.readUTF();
+
         //System.err.println(response);
         
 

@@ -68,7 +68,7 @@ public class NetworkInstantiation {
             Logger.getLogger(NetworkInstantiation.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        // --------- Instantiate inital Vertexes that are in the Multiploint Objects of the JSON File ------------
+        // --------- Instantiate inital Vertexes that are in the Multipoint Objects of the JSON File ------------
         RoadNetworkGraph graph = new RoadNetworkGraph();
         
         //Get the first feature of the JSON file which are the nodes

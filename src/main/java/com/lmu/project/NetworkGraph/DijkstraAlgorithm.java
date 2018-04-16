@@ -165,6 +165,7 @@ public class DijkstraAlgorithm {
         List<Vertex> adjacentNodes = getNeighbors(node);
         //System.out.println("Amount of Neghbours="+adjacentNodes.size());
         for (Vertex target : adjacentNodes) {
+            // Heuristic for A* 
             if (getShortestDistance(target) > getShortestDistance(node) + getDistance(node, target)) {
                 distance.put(target, getShortestDistance(node) + getDistance(node, target)); //update shortest distance
                 //System.out.println("distance:"+distance);
