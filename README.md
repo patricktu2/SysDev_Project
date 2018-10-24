@@ -11,7 +11,7 @@ To run the front-end interface run the following steps:
 * Install: run npm i
 * Run: npm run develop
 
-# Backend Jersey Server
+# Server
 The server side logic was implemented in a Java mavens project. 
 * Grizzly HTTP server takes care of client's requests to perform shortest path
 * Based on selected option in client google API is called or own search algorithm 
