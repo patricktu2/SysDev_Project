@@ -1,5 +1,7 @@
 # Maps Routing - SysDev Course project. 
 
+![Alt Text](demo.gif)
+
 Goal was to devevlop a backend server based on a given web front-end client. The backend should perform a shortest path search of 2 given points on the interface.
 
 # Client Frontend
